@@ -1,0 +1,8 @@
+dist: trusty
+language: java
+sudo: false
+jdk:
+  - oraclejdk8
+before_install:
+  - export TZ=Brazil/East
+  - chmod +x mvnw
