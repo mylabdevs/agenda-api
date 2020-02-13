@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.agenda.api.entity.Contact;
@@ -40,6 +42,12 @@ public class ContactServiceImpl implements ContactService {
 	@Override
 	public void deleteById(Long id) {
 		repository.deleteById(id);
+	}
+
+	@Override
+	public Page<Contact> findByContatsByParam(String param, Pageable pageable) {
+//		String name = param.toLowerCase();
+		return repository.findByParam(param, pageable);
 	}
 
 }
