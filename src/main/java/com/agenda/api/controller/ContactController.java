@@ -70,15 +70,15 @@ public class ContactController {
 
     @GetMapping
     public ResponseEntity<Response<Page<ContactDTO>>> findAllBtParam(
-            @RequestParam(value = "param", defaultValue = "") String param,
+            @RequestParam(value = "search", defaultValue = "") String param,
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "linePerPage", defaultValue = "10") int linerPerPage,
+            @RequestParam(value = "linesPerPage", defaultValue = "10") int linesPerPage,
             @RequestParam(value = "orderBy", defaultValue = "name") String orderBy,
-            @RequestParam(value = "sort", defaultValue = "ASC") String sort) {
+            @RequestParam(value = "sortBy", defaultValue = "ASC") String sortBy) {
 
         Response<Page<ContactDTO>> responses = new Response<Page<ContactDTO>>();
 
-        Pageable pageable = PageRequest.of(page, linerPerPage, Sort.Direction.valueOf(sort), orderBy);
+        Pageable pageable = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(sortBy), orderBy);
 
         Page<Contact> contacts = service.findByContatsByParam(param, pageable);
 
