@@ -1,10 +1,8 @@
 package com.agenda.api.controller;
 
-import com.agenda.api.service.dto.ContactDTO;
 import com.agenda.api.controller.response.Response;
-import com.agenda.api.entity.Contact;
 import com.agenda.api.service.ContactService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.agenda.api.service.dto.ContactDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,8 +20,11 @@ import java.util.Optional;
 @RequestMapping("contact")
 public class ContactController {
 
-    @Autowired
-    ContactService service;
+    private final ContactService service;
+
+    public ContactController(ContactService service) {
+        this.service = service;
+    }
 
     @PostMapping
     public ResponseEntity<Response<ContactDTO>> create(@Valid @RequestBody ContactDTO dto, BindingResult result) {
@@ -35,9 +36,9 @@ public class ContactController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
-        Contact contact = service.save(dto.toContact());
+        dto = service.save(dto);
 
-        response.setData(contact.toDTO());
+        response.setData(dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
@@ -49,9 +50,9 @@ public class ContactController {
 
         Response<ContactDTO> response = new Response<>();
 
-        Optional<Contact> c = service.findById(dto.getId());
+        Optional<ContactDTO> dtoOpt = service.findById(dto.getId());
 
-        if (!c.isPresent()) {
+        if (!dtoOpt.isPresent()) {
             result.addError(new ObjectError("Contato", "Contato não encontrado"));
         }
 
@@ -60,9 +61,9 @@ public class ContactController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
-        Contact contact = service.save(dto.toContact());
+        dto = service.save(dto);
 
-        response.setData(contact.toDTO());
+        response.setData(dto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
@@ -80,15 +81,14 @@ public class ContactController {
 
         Pageable pageable = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(sortBy), orderBy);
 
-        Page<Contact> contacts = service.findByContatsByParam(param, pageable);
+        Page<ContactDTO> contactDTO = service.findByContatsByParam(param, pageable);
 
-        if (contacts.isEmpty() || contacts.getContent() == null) {
+        if (contactDTO.isEmpty() || contactDTO.getContent() == null) {
             responses.addErros("Nenhum contato foi encontrado");
             return ResponseEntity.status(HttpStatus.OK).body(responses);
         }
 
-		Page<ContactDTO> contactDTOS = contacts.map(i -> i.toDTO());
-		responses.setData(contactDTOS);
+		responses.setData(contactDTO);
 
         return ResponseEntity.status(HttpStatus.OK).body(responses);
 
@@ -98,7 +98,7 @@ public class ContactController {
     public ResponseEntity<Response<String>> delete(@PathVariable("id") Long id) {
         Response<String> response = new Response<String>();
 
-        Optional<Contact> c = service.findById(id);
+        Optional<ContactDTO> c = service.findById(id);
 
         if (!c.isPresent()) {
             response.addErros("Contato de id " + id + " não encontrado");
@@ -106,7 +106,7 @@ public class ContactController {
         }
 
         service.deleteById(id);
-        response.setData("O contato foi excluído com sucesso");
+        response.setData(String.format("O contato de id: %d foi excluído com sucesso", id));
         return ResponseEntity.ok().body(response);
 
     }

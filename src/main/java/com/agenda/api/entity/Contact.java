@@ -34,13 +34,4 @@ public class Contact implements Serializable{
 	
 	private String email;
 
-	public ContactDTO toDTO() {
-		ContactDTO dto = new ContactDTO();
-		dto.setId(id);
-		dto.setName(name);
-		dto.setPhone(phone);
-		dto.setEmail(email);
-		return dto;
-	}
-
 }

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Optional;
 
+import com.agenda.api.service.dto.ContactDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +38,7 @@ public class ContactServiceTest {
 	
 	@Test
 	public void testFindByPhone() {
-		Optional<Contact> contact = service.findByPhone("99999-99999");
+		Optional<ContactDTO> contact = service.findByPhone("99999-99999");
 		
 		assertTrue(contact.isPresent());
 	}

@@ -25,15 +25,14 @@ public class ContactDTO {
 	@Email(message = "Email inválido")
 	private String email;
 
-	public Contact toContact() {
-		Contact c = new Contact();
-		c.setId(id);
-		c.setName(name);
-		c.setPhone(phone);
-		c.setEmail(email);
-		return c;
+	public ContactDTO() {
 	}
-	
-	
+
+	public ContactDTO(Contact c) {
+		this.id = c.getId();
+		this.name = c.getName();
+		this.phone = c.getPhone();
+		this.email = c.getEmail();
+	}
 
 }

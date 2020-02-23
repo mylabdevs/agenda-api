@@ -1,8 +1,9 @@
 package com.agenda.api.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import com.agenda.api.service.ContactService;
+import com.agenda.api.service.dto.ContactDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
@@ -17,11 +18,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import com.agenda.api.service.dto.ContactDTO;
-import com.agenda.api.entity.Contact;
-import com.agenda.api.service.ContactService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -48,7 +46,7 @@ public class ContactControllerTest {
 	@Test
 	public void testSave() throws Exception {
 		
-		BDDMockito.given(service.save(Mockito.any(Contact.class))).willReturn(getMockContact());
+		BDDMockito.given(service.save(Mockito.any(ContactDTO.class))).willReturn(getMockContact());
 		
 		mvc.perform(MockMvcRequestBuilders.post(URL)
 				.content(getJsonPayload(ID, NAME, PHONE, EMAIL))
@@ -71,8 +69,8 @@ public class ContactControllerTest {
 		.andExpect(jsonPath("$.errors[0]").value("Email inválido"));
 	}
 	
-	public Contact getMockContact() {
-		Contact c = new Contact();
+	public ContactDTO getMockContact() {
+		ContactDTO c = new ContactDTO();
 		c.setId(ID);
 		c.setName(NAME);
 		c.setPhone(PHONE);
