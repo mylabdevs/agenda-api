@@ -1,6 +1,6 @@
 package com.agenda.api.controller;
 
-import com.agenda.api.controller.dto.ContactDTO;
+import com.agenda.api.service.dto.ContactDTO;
 import com.agenda.api.controller.response.Response;
 import com.agenda.api.entity.Contact;
 import com.agenda.api.service.ContactService;
