@@ -69,7 +69,7 @@ public class ContactController {
     }
 
     @GetMapping
-    public ResponseEntity<Response<Page<ContactDTO>>> findAllBtParam(
+    public ResponseEntity<Response<Page<ContactDTO>>> findAllByParam(
             @RequestParam(value = "search", defaultValue = "") String param,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "linesPerPage", defaultValue = "10") int linesPerPage,
