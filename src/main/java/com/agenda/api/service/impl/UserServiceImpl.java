@@ -37,10 +37,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserDTO> findByEmail(String email) {
+    public Optional<User> findByEmail(String email) {
         log.debug("Request to get User : {}", email);
-        return repository.findByEmailEquals(email)
-            .map(mapper::toDto);
+        return repository.findByEmailEquals(email);
     }
 
     @Override

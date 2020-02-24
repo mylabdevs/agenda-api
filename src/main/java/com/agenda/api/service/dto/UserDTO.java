@@ -1,6 +1,7 @@
 package com.agenda.api.service.dto;
 
 import com.agenda.api.entity.User;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
@@ -11,6 +12,7 @@ import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDTO {
     private Long id;
 

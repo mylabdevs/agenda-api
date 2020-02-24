@@ -3,6 +3,7 @@ package com.agenda.api.service.dto;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.validator.constraints.Length;
 
 import com.agenda.api.entity.Contact;
@@ -10,6 +11,7 @@ import com.agenda.api.entity.Contact;
 import lombok.Data;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ContactDTO {
 	
 	private Long id;
