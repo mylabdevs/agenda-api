@@ -4,6 +4,7 @@ import com.agenda.api.security.JwtAuthenticationEntryPoint;
 import com.agenda.api.security.JwtAuthenticationTokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -58,6 +59,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers("/auth/**", "/configuration/security", "/webjars/**", "/user",  "/hello-world")
                 .permitAll()
                 .anyRequest().authenticated();
