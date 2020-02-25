@@ -1,6 +1,7 @@
 package com.agenda.api.service.mapper;
 
 import com.agenda.api.entity.Contact;
+import com.agenda.api.entity.User;
 import com.agenda.api.service.dto.ContactDTO;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +16,14 @@ public class ContactMapper implements EntityMapper<ContactDTO, Contact> {
         if (dto == null) {
             return null;
         } else {
+            User user = new User();
             Contact contact = new Contact();
             contact.setId(dto.getId());
             contact.setName(dto.getName());
             contact.setPhone(dto.getPhone());
             contact.setEmail(dto.getEmail());
+            user.setId(dto.getUserid());
+            contact.setUser(user);
             return contact;
         }
     }

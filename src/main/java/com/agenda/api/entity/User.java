@@ -28,4 +28,5 @@ public class User implements Serializable {
     @NotNull
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
+
 }

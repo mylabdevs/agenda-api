@@ -7,6 +7,7 @@ import com.agenda.api.entity.User;
 import com.agenda.api.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,6 +42,7 @@ public class UserController {
     }
 
     @GetMapping("all")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<Response<List<UserDTO>>> findAll() {
         Response<List<UserDTO>> responses = new Response<List<UserDTO>>();
 

@@ -2,11 +2,7 @@ package com.agenda.api.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -33,5 +29,9 @@ public class Contact implements Serializable{
 	private String phone;
 	
 	private String email;
+
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	@ManyToOne
+	private User user;
 
 }
