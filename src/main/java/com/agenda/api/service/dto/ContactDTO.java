@@ -27,6 +27,8 @@ public class ContactDTO {
 	@Email(message = "Email inválido")
 	private String email;
 
+	private Long userid;
+
 	public ContactDTO() {
 	}
 
@@ -35,6 +37,7 @@ public class ContactDTO {
 		this.name = c.getName();
 		this.phone = c.getPhone();
 		this.email = c.getEmail();
+		this.userid = c.getUser().getId();
 	}
 
 }

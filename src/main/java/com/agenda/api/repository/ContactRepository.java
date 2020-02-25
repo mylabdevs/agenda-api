@@ -16,9 +16,11 @@ public interface ContactRepository extends JpaRepository<Contact, Long> {
 
 	Optional<Contact> findByPhoneEquals(String phone);
 
-	@Query("SELECT c from Contact c WHERE LOWER(c.name) LIKE LOWER(CONCAT ('%', :param, '%')) " +
-			"OR c.phone LIKE CONCAT('%', :param, '%') " +
-			"OR LOWER(c.email) LIKE LOWER(CONCAT('%', :param, '%'))")
-	Page<Contact> findByParam(@Param("param") String param, Pageable pageable);
+	@Query("SELECT c from Contact c WHERE " +
+			"(LOWER(c.name) LIKE lower(:param) " +
+			"OR c.phone LIKE :param " +
+			"OR LOWER(c.email) LIKE lower(:param) ) " +
+			"and c.user.id = :id")
+	Page<Contact> findByParam(@Param("param") String param, @Param("id") Long id, Pageable pageable);
 
 }
