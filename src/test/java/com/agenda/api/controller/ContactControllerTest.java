@@ -1,30 +1,26 @@
 package com.agenda.api.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.net.URI;
-
+import com.agenda.api.service.ContactService;
+import com.agenda.api.service.dto.ContactDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import com.agenda.api.controller.dto.ContactDTO;
-import com.agenda.api.entity.Contact;
-import com.agenda.api.service.ContactService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -49,9 +45,10 @@ public class ContactControllerTest {
 	MockMvc mvc;
 	
 	@Test
+	@WithMockUser
 	public void testSave() throws Exception {
 		
-		BDDMockito.given(service.save(Mockito.any(Contact.class))).willReturn(getMockContact());
+		BDDMockito.given(service.save(Mockito.any(ContactDTO.class))).willReturn(getMockContact());
 		
 		mvc.perform(MockMvcRequestBuilders.post(URL)
 				.content(getJsonPayload(ID, NAME, PHONE, EMAIL))
@@ -65,6 +62,7 @@ public class ContactControllerTest {
 	
 	
 	@Test
+	@WithMockUser
 	public void testSaveInvalidContact() throws JsonProcessingException, Exception {
 		
 		mvc.perform(MockMvcRequestBuilders.post(URL)
@@ -74,8 +72,8 @@ public class ContactControllerTest {
 		.andExpect(jsonPath("$.errors[0]").value("Email inválido"));
 	}
 	
-	public Contact getMockContact() {
-		Contact c = new Contact();
+	public ContactDTO getMockContact() {
+		ContactDTO c = new ContactDTO();
 		c.setId(ID);
 		c.setName(NAME);
 		c.setPhone(PHONE);

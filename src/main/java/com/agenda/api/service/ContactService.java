@@ -1,24 +1,25 @@
 package com.agenda.api.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.agenda.api.entity.Contact;
+import com.agenda.api.service.dto.ContactDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface ContactService {
-	
-	Contact save(Contact contact);
 
-	Optional<Contact> findByPhone(String phone);
+    ContactDTO save(ContactDTO contactDTO);
 
-	Optional<Contact> findById(Long id);
+    Optional<ContactDTO> findByPhone(String phone);
 
-	List<Contact> findAll();
+    Optional<ContactDTO> findById(Long id);
 
-	void deleteById(Long id);
+    List<ContactDTO> findAll();
 
-	Page<Contact> findByContatsByParam(String param, Pageable pageable);
+    void deleteById(Long id);
+
+    Page<ContactDTO> findByContatsByParam(String param, Pageable pageable);
 
 }
