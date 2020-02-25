@@ -1,12 +1,16 @@
 package com.agenda.api.controller;
 
+import com.agenda.api.entity.User;
 import com.agenda.api.service.ContactService;
+import com.agenda.api.service.UserService;
 import com.agenda.api.service.dto.ContactDTO;
+import com.agenda.api.util.Util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,6 +22,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.Optional;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,18 +44,29 @@ public class ContactControllerTest {
 
 	private static final Long ID = 1L;
 
+	private static final Long USER_ID = 1L;
+
 	@MockBean
 	ContactService service;
 	
+	@MockBean
+	UserService userService;
+
 	@Autowired
 	MockMvc mvc;
-	
+
+
 	@Test
 	@WithMockUser
 	public void testSave() throws Exception {
 		
 		BDDMockito.given(service.save(Mockito.any(ContactDTO.class))).willReturn(getMockContact());
-		
+
+		User user = new User();
+		user.setId(USER_ID);
+
+		BDDMockito.given(userService.findByEmail(Mockito.anyString())).willReturn(Optional.of(user));
+
 		mvc.perform(MockMvcRequestBuilders.post(URL)
 				.content(getJsonPayload(ID, NAME, PHONE, EMAIL))
 				.contentType(MediaType.APPLICATION_JSON))
@@ -78,6 +95,7 @@ public class ContactControllerTest {
 		c.setName(NAME);
 		c.setPhone(PHONE);
 		c.setEmail(EMAIL);
+		c.setUserid(USER_ID);
 		return c;
 	}
 	

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Optional;
 
+import com.agenda.api.entity.User;
 import com.agenda.api.service.dto.ContactDTO;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,14 +34,28 @@ public class ContactServiceTest {
 	@Before
 	public void setup() {
 		BDDMockito.given(repository.findByPhoneEquals(Mockito.anyString()))
-			.willReturn(Optional.of(new Contact()));
+			.willReturn(Optional.of(getContact()));
 	}
-	
+
 	@Test
 	public void testFindByPhone() {
 		Optional<ContactDTO> contact = service.findByPhone("99999-99999");
 		
 		assertTrue(contact.isPresent());
+	}
+
+	private Contact getContact() {
+		User user = new User();
+		user.setId(1L);
+
+		Contact contact = new Contact();
+		contact.setId(1L);
+		contact.setUser(user);
+		contact.setEmail("teste@teste.com");
+		contact.setPhone("99999999999");
+		contact.setName("contato teste");
+
+		return contact;
 	}
 
 }
