@@ -38,7 +38,7 @@ public class ContactController {
     }
 
     @PostMapping
-//    @PreAuthorize("hasAnyAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
     public ResponseEntity<Response<ContactDTO>> create(@Valid @RequestBody ContactDTO dto, BindingResult result) {
 
         if (getAuthenticatedUserId() == null) {
@@ -63,6 +63,7 @@ public class ContactController {
 
 
     @PutMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
     public ResponseEntity<Response<ContactDTO>> update(@Valid @RequestBody ContactDTO dto, BindingResult result) {
 
         Response<ContactDTO> response = new Response<>();
@@ -92,6 +93,7 @@ public class ContactController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_USER')")
     public ResponseEntity<Response<Page<ContactDTO>>> findAllByParam(
             @RequestParam(value = "search", defaultValue = "") String param,
             @RequestParam(value = "page", defaultValue = "0") int page,
