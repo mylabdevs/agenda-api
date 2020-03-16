@@ -1,10 +1,13 @@
 package com.agenda.api.controller;
 
-import com.agenda.api.entity.RoleEnum;
+import com.agenda.api.entity.dto.UsersDTO;
 import com.agenda.api.service.dto.UserDTO;
 import com.agenda.api.controller.response.Response;
-import com.agenda.api.entity.User;
 import com.agenda.api.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,12 +45,18 @@ public class UserController {
     }
 
     @GetMapping("all")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public ResponseEntity<Response<List<UserDTO>>> findAll() {
-        Response<List<UserDTO>> responses = new Response<List<UserDTO>>();
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<Response<Page<UsersDTO>>> findAll(@RequestParam(value = "search", defaultValue = "") String param,
+                                                            @RequestParam(value = "page", defaultValue = "0") int page,
+                                                            @RequestParam(value = "linesPerPage", defaultValue = "12") int linesPerPage,
+                                                            @RequestParam(value = "orderBy", defaultValue = "name") String orderBy,
+                                                            @RequestParam(value = "sortBy", defaultValue = "ASC") String sortBy) {
+        Response<Page<UsersDTO>> responses = new Response<Page<UsersDTO>>();
+        Pageable pageable = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(sortBy), orderBy);
 
-        List<UserDTO> userDTOS = service.findAll();
-        responses.setData(userDTOS);
+        Page<UsersDTO> pages = service.findByUsers(pageable);
+
+        responses.setData(pages);
 
         return ResponseEntity.status(HttpStatus.OK).body(responses);
 

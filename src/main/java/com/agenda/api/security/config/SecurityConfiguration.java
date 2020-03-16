@@ -2,6 +2,7 @@ package com.agenda.api.security.config;
 
 import com.agenda.api.security.JwtAuthenticationEntryPoint;
 import com.agenda.api.security.JwtAuthenticationTokenFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,8 +18,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Configuration
 @EnableWebSecurity
@@ -60,7 +59,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .antMatchers("/auth/**", "/configuration/security", "/webjars/**", "/user",  "/hello-world")
+                .antMatchers("/auth/**", "/configuration/security", "/webjars/**", "/user", "/hello-world")
                 .permitAll()
                 .anyRequest().authenticated();
 
