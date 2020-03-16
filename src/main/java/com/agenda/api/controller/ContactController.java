@@ -95,14 +95,13 @@ public class ContactController {
     public ResponseEntity<Response<Page<ContactDTO>>> findAllByParam(
             @RequestParam(value = "search", defaultValue = "") String param,
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "linesPerPage", defaultValue = "10") int linesPerPage,
+            @RequestParam(value = "linesPerPage", defaultValue = "12") int linesPerPage,
             @RequestParam(value = "orderBy", defaultValue = "name") String orderBy,
             @RequestParam(value = "sortBy", defaultValue = "ASC") String sortBy) {
 
         Response<Page<ContactDTO>> responses = new Response<Page<ContactDTO>>();
 
         Pageable pageable = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(sortBy), orderBy);
-        System.out.println();
         Page<ContactDTO> contactDTO = service.findByContatsByParam(param, pageable);
 
         if (contactDTO.isEmpty() || contactDTO.getContent() == null) {
